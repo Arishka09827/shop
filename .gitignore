@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+
+# Virtualenv
+venv/
+
+# VSCode
+.vscode/
+
+# Media (сохраняем только папку с картинками товаров)
+!media/products/
+
+# Оставляем базу данных для демо
+!db.sqlite3 
