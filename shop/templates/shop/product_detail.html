@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} — Arish</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f8f5f2;
+            color: #4e3d2c;
+        }
+        .header {
+            background: #e7d7c9;
+            padding: 1.5rem 0 1rem 0;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #a1866f;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        .header-controls {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .header-link {
+            background: #a1866f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .header-link:hover {
+            background: #8b6f5a;
+        }
+        .count-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        .product-detail {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 24px #e7d7c9cc;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        .product-header {
+            background: #e7d7c9;
+            padding: 2rem;
+            text-align: center;
+        }
+        .product-title {
+            font-size: 2.5rem;
+            color: #a1866f;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .product-category {
+            font-size: 1.2rem;
+            color: #6d5843;
+            margin-bottom: 1rem;
+        }
+        .product-content {
+            display: flex;
+            gap: 3rem;
+            padding: 3rem;
+        }
+        .product-image {
+            flex: 1;
+            max-width: 500px;
+        }
+        .product-image img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .product-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #6d5843;
+            margin-bottom: 2rem;
+        }
+        .product-price {
+            font-size: 2.5rem;
+            color: #4e3d2c;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: #a1866f;
+            color: white;
+            flex: 1;
+        }
+        .btn-primary:hover {
+            background: #8b6f5a;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #e7d7c9;
+            color: #6d5843;
+            padding: 1rem;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            justify-content: center;
+        }
+        .btn-secondary:hover {
+            background: #d4c4b6;
+            transform: scale(1.1);
+        }
+        .btn-secondary.active {
+            background: #e74c3c;
+            color: white;
+        }
+        .similar-products {
+            margin-top: 3rem;
+        }
+        .similar-title {
+            font-size: 1.8rem;
+            color: #a1866f;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .similar-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .similar-card:hover {
+            transform: translateY(-5px);
+        }
+        .similar-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .similar-card-content {
+            padding: 1.5rem;
+        }
+        .similar-card-title {
+            font-size: 1.1rem;
+            color: #a1866f;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .similar-card-price {
+            font-size: 1.2rem;
+            color: #4e3d2c;
+            font-weight: bold;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #a1866f;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #4e3d2c;
+        }
+        @media (max-width: 768px) {
+            .header {
+                font-size: 1.8rem;
+                padding: 1rem 0;
+            }
+            .header-controls {
+                position: static;
+                transform: none;
+                margin: 1rem auto;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .product-content {
+                flex-direction: column;
+                padding: 2rem;
+            }
+            .product-image {
+                max-width: 100%;
+            }
+            .product-image img {
+                height: 400px;
+            }
+            .product-title {
+                font-size: 2rem;
+            }
+            .product-actions {
+                flex-direction: column;
+            }
+            .similar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {{ product.name }}
+    </div>
+    
+    <div class="header-controls">
+        <a href="{% url 'product_list' %}" class="header-link">🛒 Каталог</a>
+        <a href="{% url 'favorites' %}" class="header-link">
+            ❤️ Избранное
+        </a>
+        <a href="{% url 'cart' %}" class="header-link">
+            🛒 Корзина
+            {% if cart_count > 0 %}
+                <span class="count-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
+        <a href="{% url 'login' %}" class="header-link">Войти</a>
+        <a href="{% url 'register' %}" class="header-link">Регистрация</a>
+    </div>
+    
+    <div class="container">
+        <a href="{% url 'product_list' %}" class="back-link">← Вернуться к каталогу</a>
+        
+        <div class="product-detail">
+            <div class="product-header">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <div class="product-category">{{ product.category }}</div>
+            </div>
+            
+            <div class="product-content">
+                <div class="product-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <div style="width:100%;height:600px;background:#f8f5f2;display:flex;align-items:center;justify-content:center;color:#ccc;border-radius:15px;">
+                            Нет фото
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="product-info">
+                    <div>
+                        <div class="product-description">
+                            {{ product.description|linebreaks }}
+                        </div>
+                        
+                        <div class="product-price">
+                            {{ product.price }} ₽
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <form method="post" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form" style="flex: 1;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">
+                                🛒 Добавить в корзину
+                            </button>
+                        </form>
+                        
+                        <button class="btn btn-secondary {% if is_favorite %}active{% endif %}" 
+                                onclick="toggleFavorite({{ product.id }}, this)">
+                            {% if is_favorite %}❤️{% else %}🤍{% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if similar_products %}
+        <div class="similar-products">
+            <h2 class="similar-title">Похожие товары</h2>
+            <div class="similar-grid">
+                {% for similar in similar_products %}
+                <div class="similar-card" onclick="window.location.href='{% url 'product_detail' similar.id %}'">
+                    {% if similar.image %}
+                        <img src="{{ similar.image.url }}" alt="{{ similar.name }}">
+                    {% else %}
+                        <div style="width:100%;height:200px;background:#f8f5f2;display:flex;align-items:center;justify-content:center;color:#ccc;">
+                            Нет фото
+                        </div>
+                    {% endif %}
+                    <div class="similar-card-content">
+                        <div class="similar-card-title">{{ similar.name }}</div>
+                        <div class="similar-card-price">{{ similar.price }} ₽</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // AJAX для добавления в корзину
+        document.querySelector('.add-to-cart-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const button = this.querySelector('.btn-primary');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Добавляем...';
+            button.disabled = true;
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Обновляем счетчик корзины
+                    const cartCount = document.querySelector('.header-link:nth-child(3) .count-badge');
+                    if (data.cart_count > 0) {
+                        if (cartCount) {
+                            cartCount.textContent = data.cart_count;
+                        } else {
+                            const cartLink = document.querySelector('.header-link:nth-child(3)');
+                            cartLink.innerHTML = `🛒 Корзина <span class="count-badge">${data.cart_count}</span>`;
+                        }
+                    }
+                    
+                    // Показываем уведомление
+                    button.textContent = '✓ Добавлено!';
+                    button.style.background = '#27ae60';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                        button.disabled = false;
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                button.textContent = originalText;
+                button.disabled = false;
+            });
+        });
+
+        // AJAX для избранного
+        function toggleFavorite(productId, button) {
+            const formData = new FormData();
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            
+            fetch(`/shop/toggle-favorite/${productId}/`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Обновляем кнопку
+                    if (data.is_favorite) {
+                        button.innerHTML = '❤️';
+                        button.classList.add('active');
+                    } else {
+                        button.innerHTML = '🤍';
+                        button.classList.remove('active');
+                    }
+                    
+                    // Обновляем счетчик избранного
+                    const favoritesCount = document.querySelector('.header-link:nth-child(2) .count-badge');
+                    if (data.favorites_count > 0) {
+                        if (favoritesCount) {
+                            favoritesCount.textContent = data.favorites_count;
+                        } else {
+                            const favoritesLink = document.querySelector('.header-link:nth-child(2)');
+                            favoritesLink.innerHTML = `❤️ Избранное <span class="count-badge">${data.favorites_count}</span>`;
+                        }
+                    } else {
+                        const favoritesLink = document.querySelector('.header-link:nth-child(2)');
+                        favoritesLink.innerHTML = '❤️ Избранное';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html> 

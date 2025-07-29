@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход — Arish</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f8f5f2;
+            color: #4e3d2c;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: #e7d7c9;
+            padding: 1.5rem 0 1rem 0;
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #a1866f;
+            letter-spacing: 2px;
+            position: relative;
+        }
+        .header-controls {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .header-link {
+            background: #a1866f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .header-link:hover {
+            background: #8b6f5a;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .login-form {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 24px #e7d7c9cc;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .form-title {
+            font-size: 2rem;
+            color: #a1866f;
+            margin-bottom: 0.5rem;
+        }
+        .form-subtitle {
+            color: #6d5843;
+            font-size: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #6d5843;
+            font-weight: 500;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e7d7c9;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #a1866f;
+        }
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .btn-primary {
+            background: #a1866f;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #8b6f5a;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #e7d7c9;
+            color: #6d5843;
+        }
+        .btn-secondary:hover {
+            background: #d4c4b6;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #c62828;
+        }
+        .form-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e7d7c9;
+        }
+        .form-footer a {
+            color: #a1866f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 1.5rem 0 0 2rem;
+            color: #a1866f;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #4e3d2c;
+        }
+        @media (max-width: 700px) {
+            .header {
+                font-size: 1.8rem;
+                padding: 1rem 0;
+            }
+            .header-controls {
+                position: static;
+                transform: none;
+                margin: 1rem auto;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .login-form {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            .form-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Вход в Arish
+    </div>
+    
+    <div class="header-controls">
+        <a href="{% url 'product_list' %}" class="header-link">🛒 Каталог</a>
+        <a href="{% url 'favorites' %}" class="header-link">❤️ Избранное</a>
+        <a href="{% url 'cart' %}" class="header-link">🛒 Корзина</a>
+        <a href="{% url 'register' %}" class="header-link">Регистрация</a>
+    </div>
+    
+    <a href="{% url 'product_list' %}" class="back-link">← Вернуться к каталогу</a>
+    
+    <div class="container">
+        <div class="login-form">
+            <div class="form-header">
+                <h1 class="form-title">Добро пожаловать</h1>
+                <p class="form-subtitle">Войдите в свой аккаунт</p>
+            </div>
+            
+            {% if error_message %}
+            <div class="error-message">
+                {{ error_message }}
+            </div>
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Имя пользователя:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+            
+            <div class="form-footer">
+                <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
