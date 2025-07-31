@@ -5,10 +5,23 @@ from .models import Product, CartItem, Favorite
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'price', 'created_at')
-    list_filter = ('category', 'created_at')
+    list_display = ('name', 'category', 'price', 'old_price', 'is_new', 'is_popular', 'is_sale', 'created_at')
+    list_filter = ('category', 'is_new', 'is_popular', 'is_sale', 'created_at')
     search_fields = ('name', 'description', 'category')
     ordering = ('-created_at',)
+    list_editable = ('is_new', 'is_popular', 'is_sale')
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('name', 'description', 'category', 'image')
+        }),
+        ('Цены', {
+            'fields': ('price', 'old_price')
+        }),
+        ('Статусы', {
+            'fields': ('is_new', 'is_popular', 'is_sale'),
+            'classes': ('collapse',)
+        }),
+    )
 
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):

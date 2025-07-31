@@ -21,6 +21,14 @@
             letter-spacing: 2px;
             position: relative;
         }
+        .section-description {
+            background: #f8f5f2;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6d5843;
+            border-bottom: 1px solid #e7d7c9;
+        }
         .header-controls {
             background: #e7d7c9;
             padding: 1rem 2rem;
@@ -262,6 +270,32 @@
             color: #4e3d2c;
             font-weight: bold;
             margin-bottom: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .old-price {
+            font-size: 0.9rem;
+            color: #999;
+            text-decoration: line-through;
+            font-weight: normal;
+        }
+        
+        .current-price {
+            font-size: 1.2rem;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .discount-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-weight: bold;
         }
         .product-desc {
             font-size: 0.98rem;
@@ -298,6 +332,38 @@
         .back-link:hover {
             color: #4e3d2c;
         }
+        
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .section-nav-link {
+            background: #f8f5f2;
+            color: #6d5843;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .section-nav-link:hover {
+            background: #e7d7c9;
+            color: #4e3d2c;
+            transform: translateY(-2px);
+        }
+        
+        .section-nav-link.active {
+            background: #a1866f;
+            color: white;
+            border-color: #a1866f;
+        }
+        
         .no-products {
             text-align: center;
             font-size: 1.2rem;
@@ -343,8 +409,18 @@
 </head>
 <body>
     <div class="header">
-        Каталог Arish
+        {% if section_title %}
+            {{ section_title }} — Arish
+        {% else %}
+            Каталог Arish
+        {% endif %}
     </div>
+    
+    {% if section_description %}
+    <div class="section-description">
+        {{ section_description }}
+    </div>
+    {% endif %}
     
     <div class="header-controls">
         <a href="{% url 'favorites' %}" class="header-link">
@@ -364,6 +440,14 @@
     </div>
     
     <a href="/" class="back-link">← На главную</a>
+    
+    <!-- Навигация по разделам -->
+    <div class="section-nav">
+        <a href="{% url 'product_list' %}" class="section-nav-link {% if not section_title %}active{% endif %}">Все товары</a>
+        <a href="{% url 'new_products' %}" class="section-nav-link {% if section_title == 'Новинки' %}active{% endif %}">Новинки</a>
+        <a href="{% url 'sale_products' %}" class="section-nav-link {% if section_title == 'Распродажа' %}active{% endif %}">Распродажа</a>
+        <a href="{% url 'popular_products' %}" class="section-nav-link {% if section_title == 'Популярное' %}active{% endif %}">Популярное</a>
+    </div>
     
     <button class="filters-toggle" onclick="toggleFilters()">
         <span class="hamburger-icon">☰</span>
@@ -428,7 +512,15 @@
             {% endif %}
             <div class="product-title">{{ product.name }}</div>
             <div class="product-category">{{ product.category }}</div>
-            <div class="product-price">{{ product.price }} ₽</div>
+            <div class="product-price">
+                {% if product.old_price and product.old_price > product.price %}
+                    <span class="old-price">{{ product.old_price }} ₽</span>
+                    <span class="current-price">{{ product.price }} ₽</span>
+                    <span class="discount-badge">-{{ product.discount_percent }}%</span>
+                {% else %}
+                    {{ product.price }} ₽
+                {% endif %}
+            </div>
             <div class="product-desc">{{ product.description|truncatechars:80 }}</div>
             <form method="post" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form" onclick="event.stopPropagation();">
                 {% csrf_token %}

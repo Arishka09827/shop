@@ -10,91 +10,784 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             background: #f8f5f2;
             color: #4e3d2c;
+            overflow-x: hidden;
         }
-        .hero {
+        
+        /* Слайдер */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slider {
             display: flex;
-            flex-direction: column;
+            width: 400%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
+        
+        .slide {
+            width: 25%;
+            height: 100%;
+            position: relative;
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            background: linear-gradient(120deg, #f8f5f2 60%, #e7d7c9 100%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
-        .logo {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #a1866f;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
         }
-        .desc {
-            max-width: 600px;
+        
+        .slide-content {
             text-align: center;
-            font-size: 1.3rem;
-            margin-bottom: 2.5rem;
-            color: #6d5843;
+            color: white;
+            z-index: 2;
+            max-width: 600px;
+            padding: 2rem;
         }
-        .gallery {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
+        
+        .slide-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
-        .gallery img {
-            width: 180px;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px #e7d7c9cc;
-            border: 2px solid #e7d7c9;
-            background: #fff;
+        
+        .slide-description {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
-        .cta-btn {
+        
+        .slide-btn {
             background: linear-gradient(90deg, #a1866f 0%, #e7d7c9 100%);
-            color: #fff;
+            color: white;
             font-size: 1.2rem;
             padding: 1rem 2.5rem;
             border: none;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 600;
-            box-shadow: 0 2px 12px #e7d7c9aa;
-            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
-        .cta-btn:hover {
+        
+        .slide-btn:hover {
             background: linear-gradient(90deg, #e7d7c9 0%, #a1866f 100%);
-            color: #4e3d2c;
-            transform: translateY(-2px) scale(1.04);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
-        @media (max-width: 700px) {
-            .gallery {
-                flex-direction: column;
-                gap: 1rem;
+        
+        /* Навигация слайдера */
+        .slider-nav {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 10;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        /* Стрелки навигации */
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .slider-arrow.prev {
+            left: 2rem;
+        }
+        
+        .slider-arrow.next {
+            right: 2rem;
+        }
+        
+        /* Секция с карточками товаров */
+        .products-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #f8f5f2 0%, #e7d7c9 100%);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #a1866f;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(161, 134, 111, 0.15);
+            border: 2px solid #e7d7c9;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(161, 134, 111, 0.25);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #a1866f;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-category {
+            font-size: 1rem;
+            color: #6d5843;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #4e3d2c;
+            margin-bottom: 1rem;
+        }
+        
+        .product-description {
+            font-size: 0.95rem;
+            color: #6d5843;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        
+        .view-more-btn {
+            background: linear-gradient(90deg, #a1866f 0%, #e7d7c9 100%);
+            color: white;
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+        
+        .view-more-btn:hover {
+            background: linear-gradient(90deg, #e7d7c9 0%, #a1866f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(161, 134, 111, 0.3);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2.5rem;
             }
-            .gallery img {
-                width: 90vw;
-                height: 50vw;
-                max-width: 320px;
-                max-height: 220px;
+            
+            .slide-description {
+                font-size: 1.1rem;
+            }
+            
+            .slider-arrow {
+                padding: 0.8rem;
+                font-size: 1.5rem;
+            }
+            
+            .slider-arrow.prev {
+                left: 1rem;
+            }
+            
+            .slider-arrow.next {
+                right: 1rem;
+            }
+            
+
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .slide-description {
+                font-size: 1rem;
+            }
+            
+
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Подвал сайта */
+        .footer {
+            background: linear-gradient(135deg, #4e3d2c 0%, #6d5843 100%);
+            color: #f8f5f2;
+            padding: 4rem 0 0 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .footer-main {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .footer-logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e7d7c9;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        
+        .footer-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #d4c4b6;
+            margin: 0;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(231, 215, 201, 0.1);
+            border: 1px solid rgba(231, 215, 201, 0.3);
+            border-radius: 50%;
+            color: #e7d7c9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: rgba(231, 215, 201, 0.2);
+            border-color: #e7d7c9;
+            transform: translateY(-2px);
+            color: #fff;
+        }
+        
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        
+        .footer-column h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e7d7c9;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: #a1866f;
+            border-radius: 1px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #d4c4b6;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #e7d7c9;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #d4c4b6;
+            font-size: 0.95rem;
+        }
+        
+        .contact-item svg {
+            color: #a1866f;
+            flex-shrink: 0;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(231, 215, 201, 0.2);
+            padding: 2rem 0;
+        }
+        
+        .footer-bottom-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .footer-bottom-content p {
+            color: #d4c4b6;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .footer-bottom-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .footer-bottom-links a {
+            color: #d4c4b6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-bottom-links a:hover {
+            color: #e7d7c9;
+        }
+        
+        /* Адаптивность подвала */
+        @media (max-width: 768px) {
+            .footer-main {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+            
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-bottom-links {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer {
+                padding: 3rem 0 0 0;
+            }
+            
+            .footer-container {
+                padding: 0 1rem;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .footer-logo {
+                font-size: 2rem;
+            }
+            
+            .footer-description {
+                font-size: 1rem;
+            }
+            
+            .social-links {
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <div class="logo">Arish</div>
-        <div class="desc">
-            Добро пожаловать в <b>Arish</b> — интернет-магазин современной женской одежды для молодых девушек!<br>
-            Эстетика, комфорт и тренды в каждой детали. Откройте для себя коллекции, которые подчеркнут вашу индивидуальность и стиль.
+    <!-- Слайдер -->
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80');">
+                <div class="slide-content">
+                    <h1 class="slide-title">Добро пожаловать в Arish</h1>
+                    <p class="slide-description">Откройте для себя мир современной женской моды, где каждая деталь создана для того, чтобы подчеркнуть вашу индивидуальность</p>
+                    <a href="#products" class="slide-btn">Смотреть коллекцию</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80');">
+                <div class="slide-content">
+                    <h1 class="slide-title">Современный стиль</h1>
+                    <p class="slide-description">Коллекции, которые сочетают в себе элегантность и комфорт, созданные специально для молодых девушек</p>
+                    <a href="#products" class="slide-btn">Исследовать тренды</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');">
+                <div class="slide-content">
+                    <h1 class="slide-title">Качество и комфорт</h1>
+                    <p class="slide-description">Только лучшие материалы и продуманные фасоны для тех, кто ценит качество и стиль</p>
+                    <a href="#products" class="slide-btn">Выбрать наряд</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80');">
+                <div class="slide-content">
+                    <h1 class="slide-title">Начните покупки</h1>
+                    <p class="slide-description">Переходите в наш каталог и найдите идеальный образ для любого случая</p>
+                    <a href="/shop/" class="slide-btn">Перейти в магазин</a>
+                </div>
+            </div>
         </div>
-        <div class="gallery">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Платье Arish">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Современный стиль">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Молодёжная мода">
+        
+        <!-- Навигация -->
+        <button class="slider-arrow prev" onclick="changeSlide(-1)">‹</button>
+        <button class="slider-arrow next" onclick="changeSlide(1)">›</button>
+        
+        <div class="slider-nav">
+            <div class="slider-dot active" onclick="goToSlide(0)"></div>
+            <div class="slider-dot" onclick="goToSlide(1)"></div>
+            <div class="slider-dot" onclick="goToSlide(2)"></div>
+            <div class="slider-dot" onclick="goToSlide(3)"></div>
         </div>
-        <form action="/shop/">
-            <button class="cta-btn" type="submit">Перейти в магазин</button>
-        </form>
     </div>
+    
+    <!-- Секция с карточками товаров -->
+    <section id="products" class="products-section">
+        <h2 class="section-title">Популярные товары</h2>
+        <div class="products-grid">
+            <div class="product-card" onclick="window.location.href='/shop/'">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Элегантное платье" class="product-image">
+                <h3 class="product-name">Элегантное платье</h3>
+                <p class="product-category">Платья</p>
+                <p class="product-price">4,500 ₽</p>
+                <p class="product-description">Идеальное платье для особых случаев. Элегантный крой и качественные материалы.</p>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='/shop/'">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Современный костюм" class="product-image">
+                <h3 class="product-name">Современный костюм</h3>
+                <p class="product-category">Костюмы</p>
+                <p class="product-price">6,200 ₽</p>
+                <p class="product-description">Стильный костюм для деловой встречи или свидания. Комфортный и элегантный.</p>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='/shop/'">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Летняя блуза" class="product-image">
+                <h3 class="product-name">Летняя блуза</h3>
+                <p class="product-category">Блузы</p>
+                <p class="product-price">2,800 ₽</p>
+                <p class="product-description">Легкая и воздушная блуза для жарких дней. Идеально сочетается с любой юбкой или брюками.</p>
+            </div>
+            
+            <div class="product-card" onclick="window.location.href='/shop/'">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400&q=80" alt="Джинсы классические" class="product-image">
+                <h3 class="product-name">Джинсы классические</h3>
+                <p class="product-category">Джинсы</p>
+                <p class="product-price">3,900 ₽</p>
+                <p class="product-description">Классические джинсы с идеальной посадкой. Подходят для любого случая.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="/shop/" class="view-more-btn">Смотреть все товары</a>
+        </div>
+    </section>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const slider = document.getElementById('slider');
+        const totalSlides = slides.length;
+        
+        // Автоматическая прокрутка слайдера
+        let autoSlideInterval = setInterval(autoSlide, 5000);
+        
+        function autoSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateSlider();
+        }
+        
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlider();
+            resetAutoSlide();
+        }
+        
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            updateSlider();
+            resetAutoSlide();
+        }
+        
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentSlide * 25}%)`;
+            
+            // Обновляем активную точку
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+        
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(autoSlide, 5000);
+        }
+        
+        // Плавная прокрутка к секции товаров
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Остановка автопрокрутки при наведении мыши
+        slider.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        
+        slider.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(autoSlide, 5000);
+        });
+        
+        // Обработка свайпов для мобильных устройств
+        let startX = 0;
+        let endX = 0;
+        
+        slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+        
+        slider.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    changeSlide(1); // Свайп влево
+                } else {
+                    changeSlide(-1); // Свайп вправо
+                }
+            }
+        }
+    </script>
+    
+    <!-- Подвал сайта -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Основная информация -->
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">Arish</h3>
+                    <p class="footer-description">
+                        Современная женская одежда для молодых девушек. 
+                        Качество, стиль и комфорт в каждой детали.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" title="VKontakte">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2zm3.48 14.27h-1.46c-.55 0-.71-.44-1.68-1.42-.82-.82-1.19-.93-1.39-.93-.25 0-.32.09-.32.6v1.31c0 .44-.09.53-.84.53-1.24 0-2.66-.81-3.71-2.32-1.31-2.38-1.69-4.18-1.69-4.43 0-.19.09-.37.47-.37h1.46c.35 0 .51.16.66.53.7 2.19 1.86 4.11 2.34 4.11.18 0 .26-.09.26-.6V9.98c-.06-1-.59-1.08-.59-1.44 0-.18.14-.37.37-.37h2.29c.31 0 .42.14.42.46v2.58c0 .31.18.42.26.42.18 0 .31-.09.6-.42.93-1.2 1.64-3.03 1.64-3.03.09-.19.26-.37.66-.37h1.46c.47 0 .57.23.47.51-.23.93-2.46 4.24-2.46 4.24-.18.31-.25.42 0 .78.18.31.79.93 1.2 1.5.78.93 1.08 1.72 1.2 2.23.09.47-.09.71-.56.71z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" title="Telegram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.27-.48.74-.74 2.87-1.25 4.79-2.09 5.76-2.5 2.76-1.18 3.34-1.38 3.73-1.39.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Магазин</h4>
+                        <ul>
+                            <li><a href="/shop/">Каталог товаров</a></li>
+                            <li><a href="/shop/new/">Новинки</a></li>
+                            <li><a href="/shop/sale/">Распродажа</a></li>
+                            <li><a href="/shop/popular/">Популярное</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Помощь</h4>
+                        <ul>
+                            <li><a href="#">Доставка и оплата</a></li>
+                            <li><a href="#">Возврат и обмен</a></li>
+                            <li><a href="#">Размерная сетка</a></li>
+                            <li><a href="#">Уход за одеждой</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>О компании</h4>
+                        <ul>
+                            <li><a href="#">О нас</a></li>
+                            <li><a href="#">Контакты</a></li>
+                            <li><a href="#">Вакансии</a></li>
+                            <li><a href="#">Партнерам</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Контакты</h4>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                <span>Москва, ул. Примерная, 123</span>
+                            </div>
+                            <div class="contact-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                </svg>
+                                <span>+7 (495) 123-45-67</span>
+                            </div>
+                            <div class="contact-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                                <span>info@arish.ru</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Нижняя часть подвала -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Arish. Все права защищены.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#">Политика конфиденциальности</a>
+                        <a href="#">Условия использования</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html> 

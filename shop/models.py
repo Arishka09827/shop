@@ -7,12 +7,23 @@ class Product(models.Model):
     name = models.CharField('Название', max_length=120)
     description = models.TextField('Описание', blank=True)
     price = models.DecimalField('Цена', max_digits=8, decimal_places=2)
+    old_price = models.DecimalField('Старая цена', max_digits=8, decimal_places=2, null=True, blank=True)
     image = models.ImageField('Изображение', upload_to='products/')
     category = models.CharField('Категория', max_length=60, blank=True)
+    is_new = models.BooleanField('Новинка', default=False)
+    is_popular = models.BooleanField('Популярное', default=False)
+    is_sale = models.BooleanField('Распродажа', default=False)
     created_at = models.DateTimeField('Дата добавления', auto_now_add=True)
 
     def __str__(self):
         return self.name
+    
+    @property
+    def discount_percent(self):
+        """Вычисляет процент скидки"""
+        if self.old_price and self.old_price > self.price:
+            return int(((self.old_price - self.price) / self.old_price) * 100)
+        return 0
 
 class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

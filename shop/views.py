@@ -79,6 +79,99 @@ def product_list(request):
     
     return render(request, 'shop/product_list.html', context)
 
+def new_products(request):
+    """Представление для новинок"""
+    products = Product.objects.filter(is_new=True).order_by('-created_at')
+    
+    # Получаем корзину пользователя
+    cart_items = []
+    cart_total = 0
+    if request.session.session_key:
+        cart_items = CartItem.objects.filter(session_key=request.session.session_key)
+        cart_total = sum(item.get_total_price() for item in cart_items)
+    
+    # Получаем избранные товары
+    favorites = []
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+    elif request.session.session_key:
+        favorites = Favorite.objects.filter(session_key=request.session.session_key).values_list('product_id', flat=True)
+    
+    context = {
+        'products': products,
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'cart_count': len(cart_items),
+        'favorites': favorites,
+        'favorites_count': len(favorites),
+        'section_title': 'Новинки',
+        'section_description': 'Самые свежие поступления в нашем магазине'
+    }
+    
+    return render(request, 'shop/product_list.html', context)
+
+def sale_products(request):
+    """Представление для распродажи"""
+    products = Product.objects.filter(is_sale=True).order_by('-created_at')
+    
+    # Получаем корзину пользователя
+    cart_items = []
+    cart_total = 0
+    if request.session.session_key:
+        cart_items = CartItem.objects.filter(session_key=request.session.session_key)
+        cart_total = sum(item.get_total_price() for item in cart_items)
+    
+    # Получаем избранные товары
+    favorites = []
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+    elif request.session.session_key:
+        favorites = Favorite.objects.filter(session_key=request.session.session_key).values_list('product_id', flat=True)
+    
+    context = {
+        'products': products,
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'cart_count': len(cart_items),
+        'favorites': favorites,
+        'favorites_count': len(favorites),
+        'section_title': 'Распродажа',
+        'section_description': 'Специальные предложения и скидки'
+    }
+    
+    return render(request, 'shop/product_list.html', context)
+
+def popular_products(request):
+    """Представление для популярных товаров"""
+    products = Product.objects.filter(is_popular=True).order_by('-created_at')
+    
+    # Получаем корзину пользователя
+    cart_items = []
+    cart_total = 0
+    if request.session.session_key:
+        cart_items = CartItem.objects.filter(session_key=request.session.session_key)
+        cart_total = sum(item.get_total_price() for item in cart_items)
+    
+    # Получаем избранные товары
+    favorites = []
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+    elif request.session.session_key:
+        favorites = Favorite.objects.filter(session_key=request.session.session_key).values_list('product_id', flat=True)
+    
+    context = {
+        'products': products,
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'cart_count': len(cart_items),
+        'favorites': favorites,
+        'favorites_count': len(favorites),
+        'section_title': 'Популярное',
+        'section_description': 'Самые востребованные товары'
+    }
+    
+    return render(request, 'shop/product_list.html', context)
+
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
