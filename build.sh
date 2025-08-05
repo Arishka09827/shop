@@ -14,8 +14,14 @@ pip install --no-cache-dir --force-reinstall Pillow==10.0.1
 # Collect static files
 python manage.py collectstatic --no-input
 
+# Ensure media directory exists and has proper permissions
+mkdir -p media/products
+chmod -R 755 media/
+
 # Run migrations
 python manage.py migrate
+
+
 
 # Set production settings
 export DJANGO_SETTINGS_MODULE=shopsite.settings_production 
