@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: arish-shop
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn shopsite.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true 
