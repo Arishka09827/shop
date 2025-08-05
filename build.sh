@@ -15,4 +15,7 @@ pip install --no-cache-dir --force-reinstall Pillow==10.0.1
 python manage.py collectstatic --no-input
 
 # Run migrations
-python manage.py migrate 
+python manage.py migrate
+
+# Set production settings
+export DJANGO_SETTINGS_MODULE=shopsite.settings_production 

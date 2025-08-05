@@ -8,4 +8,6 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: SECRET_KEY
-        generateValue: true 
+        generateValue: true
+      - key: DJANGO_SETTINGS_MODULE
+        value: shopsite.settings_production 
